@@ -2,6 +2,7 @@ package sql
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"url-shortener/internal/storage"
 
@@ -69,3 +70,30 @@ func (s *Storage) SaveURL(urlToSave, alias string) (int64, error) {
 
 	return id, nil
 }
+
+func (s *Storage) GetUrl(alias string) (string, error) {
+	const op = "storage.sqlite.GetUrl"
+
+	stmt, err := s.db.Prepare("SELECT url FROM url WHERE alias = ?")
+
+	if err != nil {
+		return "", fmt.Errorf("%s, %w", op, err)
+	}
+
+	var resURL string
+
+	scanErr := stmt.QueryRow(alias).Scan(&resURL)
+
+	if scanErr != nil {
+		if errors.Is(scanErr, sql.ErrNoRows) {
+			return "", storage.ErrURLNotFound
+		}
+		return "", fmt.Errorf("%s, %w", op, err)
+	}
+
+	return resURL, nil
+}
+
+// func (s *Storage) DeleteUrl(alias string) error {
+
+// }

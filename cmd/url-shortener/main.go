@@ -30,19 +30,6 @@ func main() {
 
 	_ = storage
 
-	id, err := storage.SaveURL("https://google.com", "google")
-
-	log.Info("saved url", slog.Int64("id", id))
-	if err != nil {
-		log.Error("failed to save url", customSlog.Error(err))
-	}
-
-	_, err2 := storage.SaveURL("https://google.com", "google")
-
-	if err2 != nil {
-		log.Error("failed to save url", customSlog.Error(err2))
-	}
-
 	// TODO init router: chi, chi render
 	// TODO run server: cleanenv
 }
