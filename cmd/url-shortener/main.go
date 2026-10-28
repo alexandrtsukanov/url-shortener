@@ -43,7 +43,7 @@ func main() {
 	router.Use(middleware.Recoverer)
 	router.Use(middleware.URLFormat)
 
-	router.Post("/url", save.CreateUrl(log, storage))
+	router.Post("/url", save.HandleSaveUrl(log, storage))
 
 	log.Info("starting server", slog.String("address", cfg.Address))
 
@@ -62,7 +62,6 @@ func main() {
 	log.Error("server stopped")
 
 	// TODO run server: cleanenv
-
 }
 
 const (

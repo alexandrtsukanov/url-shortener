@@ -30,9 +30,9 @@ type URLSaver interface {
 	SaveURL(urlToSave, alias string) (int64, error)
 }
 
-func CreateUrl(log *slog.Logger, urlSaver URLSaver) http.HandlerFunc {
+func HandleSaveUrl(log *slog.Logger, urlSaver URLSaver) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		const op = "handlers.url.save.NewUrlSaver"
+		const op = "handlers.url.save.CreateUrl"
 
 		log = log.With(
 			slog.String("op", op),
