@@ -1,4 +1,4 @@
-package customSlog
+package customlog
 
 import (
 	"log/slog"
