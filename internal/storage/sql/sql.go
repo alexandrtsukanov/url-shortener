@@ -59,6 +59,7 @@ func (s *Storage) SaveURL(urlToSave, alias string) (int64, error) {
 		if sqliteErr, ok := err.(sqlite3.Error); ok && sqliteErr.ExtendedCode == sqlite3.ErrConstraintUnique {
 			return 0, fmt.Errorf("%s, %w", op, storage.ErrURLExists)
 		}
+
 		return 0, fmt.Errorf("%s, %w", op, err)
 	}
 
