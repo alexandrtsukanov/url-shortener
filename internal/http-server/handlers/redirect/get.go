@@ -53,6 +53,6 @@ func HandleGetUrl(log *slog.Logger, urlGetter URLGetter) http.HandlerFunc {
 
 		log.Info("url found", slog.String("url", resUrl))
 
-		// http.Redirect(w, r, resUrl, http.StatusFound)
+		http.Redirect(w, r, resUrl, http.StatusFound)
 	}
 }
