@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"os"
 	"url-shortener/internal/config"
+	"url-shortener/internal/http-server/handlers/redirect"
+	deleteurl "url-shortener/internal/http-server/handlers/url/delete"
 	"url-shortener/internal/http-server/handlers/url/save"
 	"url-shortener/internal/http-server/middleware/logger"
 	"url-shortener/internal/lib/logger/customlog"
@@ -44,6 +46,8 @@ func main() {
 	router.Use(middleware.URLFormat)
 
 	router.Post("/url", save.HandleSaveUrl(log, storage))
+	router.Get("/{alias}", redirect.HandleGetUrl(log, storage))
+	router.Delete("/{alias}", deleteurl.HandleDeleteUrl(log, storage))
 
 	log.Info("starting server", slog.String("address", cfg.Address))
 

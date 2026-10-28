@@ -27,7 +27,7 @@ type Response struct {
 const aliasLen uint8 = 6
 
 type URLSaver interface {
-	SaveURL(urlToSave, alias string) (int64, error)
+	SaveUrl(urlToSave, alias string) (int64, error)
 }
 
 func HandleSaveUrl(log *slog.Logger, urlSaver URLSaver) http.HandlerFunc {
@@ -65,7 +65,6 @@ func HandleSaveUrl(log *slog.Logger, urlSaver URLSaver) http.HandlerFunc {
 			}
 
 			log.Error("invalid request body", customlog.Error(err))
-
 			render.JSON(w, r, resp.ValidationError(validationErr))
 
 			return
@@ -86,11 +85,10 @@ func HandleSaveUrl(log *slog.Logger, urlSaver URLSaver) http.HandlerFunc {
 			alias = aliasGenerated
 		}
 
-		id, err := urlSaver.SaveURL(req.URL, alias)
+		id, err := urlSaver.SaveUrl(req.URL, alias)
 
 		if errors.Is(err, storage.ErrURLExists) {
 			log.Info("url already exists", slog.String("url", req.URL))
-
 			render.JSON(w, r, resp.Error("url already exists"))
 
 			return
@@ -98,7 +96,6 @@ func HandleSaveUrl(log *slog.Logger, urlSaver URLSaver) http.HandlerFunc {
 
 		if err != nil {
 			log.Error("failed to save url", customlog.Error(err))
-
 			render.JSON(w, r, resp.Error("failed to save url"))
 
 			return

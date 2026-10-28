@@ -44,7 +44,7 @@ func NewStorage(storagePath string) (*Storage, error) {
 	return &Storage{db: db}, nil
 }
 
-func (s *Storage) SaveURL(urlToSave, alias string) (int64, error) {
+func (s *Storage) SaveUrl(urlToSave, alias string) (int64, error) {
 	const op = "storage.sqlite.SaveURL"
 
 	stmt, err := s.db.Prepare("INSERT INTO url(url, alias) VALUES(?, ?)")
@@ -87,7 +87,7 @@ func (s *Storage) GetUrl(alias string) (string, error) {
 
 	if scanErr != nil {
 		if errors.Is(scanErr, sql.ErrNoRows) {
-			return "", storage.ErrURLNotFound
+			return "", fmt.Errorf("%s, %w", op, storage.ErrURLNotFound)
 		}
 		return "", fmt.Errorf("%s, %w", op, err)
 	}
@@ -104,10 +104,20 @@ func (s *Storage) DeleteUrl(alias string) error {
 		return fmt.Errorf("%s, %w", op, err)
 	}
 
-	_, err = stmt.Exec(alias)
+	res, err := stmt.Exec(alias)
 
 	if err != nil {
 		return fmt.Errorf("%s, %w", op, err)
+	}
+
+	rowsDeleted, err := res.RowsAffected()
+
+	if err != nil {
+		return fmt.Errorf("%s, %w", op, err)
+	}
+
+	if rowsDeleted == 0 {
+		return fmt.Errorf("%s, %w", op, storage.ErrURLNotFound)
 	}
 
 	return nil

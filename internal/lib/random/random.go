@@ -17,7 +17,7 @@ func NewRandomString(size uint8) (string, error) {
 	result := make([]string, size)
 
 	for i := 0; i < int(size); i += 1 {
-		result[i] = string(byte(randUnique.Intn(90-65+1) + 65))
+		result[i] = string(byte(randUnique.Intn(122-97+1) + 97))
 	}
 
 	return strings.Join(result, ""), nil
