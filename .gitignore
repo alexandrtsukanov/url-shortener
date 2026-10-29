@@ -33,7 +33,7 @@ go.work.sum
 # .vscode/
 
 # db
-/storage/storage.db
+storage/storage.db
 
 # github
 .github
