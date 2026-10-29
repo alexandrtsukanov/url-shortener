@@ -96,7 +96,7 @@ func HandleSaveUrl(log *slog.Logger, urlSaver URLSaver) http.HandlerFunc {
 
 		if err != nil {
 			log.Error("failed to save url", customlog.Error(err))
-			render.JSON(w, r, resp.Error("failed to save url"))
+			render.JSON(w, r, resp.Error("failed to add url"))
 
 			return
 		}
